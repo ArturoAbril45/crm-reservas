@@ -40,7 +40,7 @@
          }">
 
     @if (session('status'))
-        <div class="mb-6 px-4 py-3 rounded-xl bg-blue-50 text-blue-700 text-sm border border-blue-100">
+        <div class="mb-6 px-4 py-3 rounded-xl bg-[#9c0720]/10 text-[#9c0720] text-sm border border-[#9c0720]/15">
             {{ session('status') }}
         </div>
     @endif
@@ -84,7 +84,7 @@
                                 <td class="px-6 py-4 text-gray-900 font-medium">$ {{ number_format($compra->total, 2) }}</td>
                                 <td class="px-6 py-4 text-right">
                                     @if ($compra->estado_pago === 'Pendiente')
-                                        <button @click="pagandoId = {{ $compra->id }}" class="text-xs font-medium text-blue-700 hover:text-blue-800">
+                                        <button @click="pagandoId = {{ $compra->id }}" class="text-xs font-medium text-[#9c0720] hover:text-[#7c0519]">
                                             Marcar pagada
                                         </button>
                                     @elseif ($compra->comprobante_pago)
@@ -120,7 +120,7 @@
                     <div>
                         <x-input-label for="almacen_id" value="Almacén destino" />
                         <select id="almacen_id" name="almacen_id" x-model="almacenId" @change="items = [itemVacio()]" required
-                                class="mt-1.5 block w-full rounded-lg border border-gray-300 px-3.5 py-2.5 text-sm text-gray-900 focus:border-blue-700 focus:outline-none focus:ring-1 focus:ring-blue-700">
+                                class="mt-1.5 block w-full rounded-lg border border-gray-300 px-3.5 py-2.5 text-sm text-gray-900 focus:border-[#9c0720] focus:outline-none focus:ring-1 focus:ring-[#9c0720]">
                             <option value="" disabled selected>Seleccioná un almacén</option>
                             @foreach ($almacenes as $almacen)
                                 <option value="{{ $almacen->id }}">{{ $almacen->nombre }}</option>
@@ -163,7 +163,7 @@
                             </div>
                         </template>
 
-                        <button type="button" @click="items.push(itemVacio())" class="text-xs font-medium text-blue-700 hover:text-blue-800">
+                        <button type="button" @click="items.push(itemVacio())" class="text-xs font-medium text-[#9c0720] hover:text-[#7c0519]">
                             + Agregar producto
                         </button>
 
@@ -184,7 +184,7 @@
                             <template x-for="fp in ['Efectivo', 'Transferencia', 'Crédito']" :key="fp">
                                 <button type="button" @click="formaPago = fp"
                                         class="rounded-lg border py-2 text-xs font-medium transition-colors"
-                                        :class="formaPago === fp ? 'border-blue-700 text-blue-700 bg-blue-50' : 'border-gray-200 text-gray-500 hover:border-gray-300'"
+                                        :class="formaPago === fp ? 'border-[#9c0720] text-[#9c0720] bg-[#9c0720]/10' : 'border-gray-200 text-gray-500 hover:border-gray-300'"
                                         x-text="fp"></button>
                             </template>
                         </div>
@@ -193,7 +193,7 @@
                     <div x-show="formaPago === 'Transferencia'">
                         <x-input-label for="comprobante_pago" value="Comprobante de pago" />
                         <input id="comprobante_pago" name="comprobante_pago" type="file" accept="image/*,application/pdf"
-                               class="mt-1.5 block w-full text-sm text-gray-600 file:mr-3 file:py-2 file:px-3 file:rounded-lg file:border-0 file:bg-blue-50 file:text-blue-700 file:text-sm file:font-medium">
+                               class="mt-1.5 block w-full text-sm text-gray-600 file:mr-3 file:py-2 file:px-3 file:rounded-lg file:border-0 file:bg-[#9c0720]/10 file:text-[#9c0720] file:text-sm file:font-medium">
                         <p class="mt-1.5 text-xs text-gray-400">Obligatorio para pagos por transferencia.</p>
                     </div>
 
@@ -204,7 +204,7 @@
                     <div>
                         <x-input-label for="observaciones" value="Observaciones" />
                         <textarea id="observaciones" name="observaciones" rows="2"
-                                  class="mt-1.5 block w-full rounded-lg border border-gray-300 px-3.5 py-2.5 text-sm text-gray-900 focus:border-blue-700 focus:outline-none focus:ring-1 focus:ring-blue-700">{{ old('observaciones') }}</textarea>
+                                  class="mt-1.5 block w-full rounded-lg border border-gray-300 px-3.5 py-2.5 text-sm text-gray-900 focus:border-[#9c0720] focus:outline-none focus:ring-1 focus:ring-[#9c0720]">{{ old('observaciones') }}</textarea>
                     </div>
 
                     <x-primary-button>Registrar compra</x-primary-button>
@@ -230,7 +230,7 @@
                     <div>
                         <x-input-label for="comprobante_pago_{{ $compra->id }}" value="Comprobante de pago" />
                         <input id="comprobante_pago_{{ $compra->id }}" name="comprobante_pago" type="file" accept="image/*,application/pdf" required
-                               class="mt-1.5 block w-full text-sm text-gray-600 file:mr-3 file:py-2 file:px-3 file:rounded-lg file:border-0 file:bg-blue-50 file:text-blue-700 file:text-sm file:font-medium">
+                               class="mt-1.5 block w-full text-sm text-gray-600 file:mr-3 file:py-2 file:px-3 file:rounded-lg file:border-0 file:bg-[#9c0720]/10 file:text-[#9c0720] file:text-sm file:font-medium">
                     </div>
                     <div class="flex gap-3 pt-2">
                         <button type="button" @click="pagandoId = null" class="flex-1 py-2.5 rounded-lg border border-gray-200 text-sm font-medium text-gray-600 hover:bg-gray-50">

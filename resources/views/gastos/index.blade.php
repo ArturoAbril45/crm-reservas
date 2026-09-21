@@ -6,7 +6,7 @@
     <div x-data="{ formaPago: 'Efectivo' }">
 
     @if (session('status'))
-        <div class="mb-6 px-4 py-3 rounded-xl bg-blue-50 text-blue-700 text-sm border border-blue-100">
+        <div class="mb-6 px-4 py-3 rounded-xl bg-[#9c0720]/10 text-[#9c0720] text-sm border border-[#9c0720]/15">
             {{ session('status') }}
         </div>
     @endif
@@ -72,7 +72,7 @@
                     <div>
                         <x-input-label for="sucursal_id" value="Sucursal" />
                         <select id="sucursal_id" name="sucursal_id" required
-                                class="mt-1.5 block w-full rounded-lg border border-gray-300 px-3.5 py-2.5 text-sm text-gray-900 focus:border-blue-700 focus:outline-none focus:ring-1 focus:ring-blue-700">
+                                class="mt-1.5 block w-full rounded-lg border border-gray-300 px-3.5 py-2.5 text-sm text-gray-900 focus:border-[#9c0720] focus:outline-none focus:ring-1 focus:ring-[#9c0720]">
                             <option value="" disabled selected>Seleccioná una sucursal</option>
                             @foreach ($sucursales as $s)
                                 <option value="{{ $s->id }}" @selected(optional($sucursal)->id === $s->id)>{{ $s->nombre }}</option>
@@ -82,7 +82,7 @@
 
                     <div>
                         <x-input-label for="categoria" value="Categoría" />
-                        <select id="categoria" name="categoria" class="mt-1.5 block w-full rounded-lg border border-gray-300 px-3.5 py-2.5 text-sm text-gray-900 focus:border-blue-700 focus:outline-none focus:ring-1 focus:ring-blue-700">
+                        <select id="categoria" name="categoria" class="mt-1.5 block w-full rounded-lg border border-gray-300 px-3.5 py-2.5 text-sm text-gray-900 focus:border-[#9c0720] focus:outline-none focus:ring-1 focus:ring-[#9c0720]">
                             @foreach ($categorias as $categoria)
                                 <option value="{{ $categoria }}">{{ $categoria }}</option>
                             @endforeach
@@ -106,7 +106,7 @@
                             <template x-for="fp in ['Efectivo', 'Transferencia']" :key="fp">
                                 <button type="button" @click="formaPago = fp"
                                         class="rounded-lg border py-2 text-xs font-medium transition-colors"
-                                        :class="formaPago === fp ? 'border-blue-700 text-blue-700 bg-blue-50' : 'border-gray-200 text-gray-500 hover:border-gray-300'"
+                                        :class="formaPago === fp ? 'border-[#9c0720] text-[#9c0720] bg-[#9c0720]/10' : 'border-gray-200 text-gray-500 hover:border-gray-300'"
                                         x-text="fp"></button>
                             </template>
                         </div>

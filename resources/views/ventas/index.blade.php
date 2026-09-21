@@ -6,7 +6,7 @@
     <div x-data="ventaForm()">
 
     @if (session('status'))
-        <div class="mb-6 px-4 py-3 rounded-xl bg-blue-50 text-blue-700 text-sm border border-blue-100">
+        <div class="mb-6 px-4 py-3 rounded-xl bg-[#9c0720]/10 text-[#9c0720] text-sm border border-[#9c0720]/15">
             {{ session('status') }}
         </div>
     @endif
@@ -42,13 +42,13 @@
                                 <td class="px-6 py-4 text-gray-500 capitalize">
                                     {{ $venta->tipo_pago }}
                                     @if ($venta->captura_pago)
-                                        <a href="{{ asset('storage/' . $venta->captura_pago) }}" target="_blank" class="ml-1 text-xs font-medium text-blue-700 hover:text-blue-800">Ver captura</a>
+                                        <a href="{{ asset('storage/' . $venta->captura_pago) }}" target="_blank" class="ml-1 text-xs font-medium text-[#9c0720] hover:text-[#7c0519]">Ver captura</a>
                                     @endif
                                 </td>
                                 <td class="px-6 py-4 text-gray-500">{{ optional($venta->fecha)->format('d/m/Y') ?? $venta->created_at->format('d/m/Y') }}</td>
                                 <td class="px-6 py-4 text-gray-900 font-medium">$ {{ number_format($venta->valor_total, 2) }}</td>
                                 <td class="px-6 py-4 text-right">
-                                    <button @click="detalleAbierto = (detalleAbierto === {{ $venta->id }} ? null : {{ $venta->id }})" class="text-xs font-medium text-blue-700 hover:text-blue-800">
+                                    <button @click="detalleAbierto = (detalleAbierto === {{ $venta->id }} ? null : {{ $venta->id }})" class="text-xs font-medium text-[#9c0720] hover:text-[#7c0519]">
                                         Ver nota
                                     </button>
                                 </td>
@@ -107,7 +107,7 @@
                     <div>
                         <x-input-label for="sucursal_id" value="Sucursal" />
                         <select id="sucursal_id" name="sucursal_id" x-model="sucursalId" @change="items = [itemVacio()]" required
-                                class="mt-1.5 block w-full rounded-lg border border-gray-300 px-3.5 py-2.5 text-sm text-gray-900 focus:border-blue-700 focus:outline-none focus:ring-1 focus:ring-blue-700">
+                                class="mt-1.5 block w-full rounded-lg border border-gray-300 px-3.5 py-2.5 text-sm text-gray-900 focus:border-[#9c0720] focus:outline-none focus:ring-1 focus:ring-[#9c0720]">
                             <option value="" disabled>Seleccioná una sucursal</option>
                             @foreach ($sucursales as $s)
                                 <option value="{{ $s->id }}">{{ $s->nombre }}</option>
@@ -118,7 +118,7 @@
                     <div>
                         <x-input-label value="Jornada de la venta" class="mb-1.5" />
                         @if ($jornada['ayer_habilitado'])
-                            <select name="fecha_jornada" class="block w-full rounded-lg border border-gray-300 px-3.5 py-2.5 text-sm text-gray-900 focus:border-blue-700 focus:outline-none focus:ring-1 focus:ring-blue-700">
+                            <select name="fecha_jornada" class="block w-full rounded-lg border border-gray-300 px-3.5 py-2.5 text-sm text-gray-900 focus:border-[#9c0720] focus:outline-none focus:ring-1 focus:ring-[#9c0720]">
                                 @foreach ($jornada['opciones'] as $valor => $etiqueta)
                                     <option value="{{ $valor }}">{{ $etiqueta }}</option>
                                 @endforeach
@@ -165,7 +165,7 @@
                             </div>
                         </template>
 
-                        <button type="button" @click="items.push(itemVacio())" class="text-xs font-medium text-blue-700 hover:text-blue-800">
+                        <button type="button" @click="items.push(itemVacio())" class="text-xs font-medium text-[#9c0720] hover:text-[#7c0519]">
                             + Agregar producto
                         </button>
 
@@ -178,9 +178,9 @@
                         </template>
                     </div>
 
-                    <div class="flex items-center justify-between rounded-lg bg-blue-50 px-3.5 py-3">
-                        <span class="text-sm font-medium text-blue-700">Total</span>
-                        <span class="text-lg font-semibold text-blue-700" x-text="'$ ' + totalGeneral.toFixed(2)"></span>
+                    <div class="flex items-center justify-between rounded-lg bg-[#9c0720]/10 px-3.5 py-3">
+                        <span class="text-sm font-medium text-[#9c0720]">Total</span>
+                        <span class="text-lg font-semibold text-[#9c0720]" x-text="'$ ' + totalGeneral.toFixed(2)"></span>
                     </div>
 
                     <div>
@@ -189,7 +189,7 @@
                         <div class="grid grid-cols-2 gap-3">
                             <button type="button" @click="tipoPago = 'efectivo'"
                                     class="flex flex-col items-center gap-2 rounded-xl border py-4 transition-colors"
-                                    :class="tipoPago === 'efectivo' ? 'border-blue-700 text-blue-700' : 'border-gray-200 text-gray-500 hover:border-gray-300'">
+                                    :class="tipoPago === 'efectivo' ? 'border-[#9c0720] text-[#9c0720]' : 'border-gray-200 text-gray-500 hover:border-gray-300'">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6">
                                     <rect x="2" y="6" width="20" height="12" rx="2" />
                                     <circle cx="12" cy="12" r="2.5" />
@@ -199,7 +199,7 @@
                             </button>
                             <button type="button" @click="tipoPago = 'transferencia'"
                                     class="flex flex-col items-center gap-2 rounded-xl border py-4 transition-colors"
-                                    :class="tipoPago === 'transferencia' ? 'border-blue-700 text-blue-700' : 'border-gray-200 text-gray-500 hover:border-gray-300'">
+                                    :class="tipoPago === 'transferencia' ? 'border-[#9c0720] text-[#9c0720]' : 'border-gray-200 text-gray-500 hover:border-gray-300'">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6">
                                     <path d="M3 10h18M7 15h.01M11 15h4M4 6h16a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1Z" />
                                 </svg>
@@ -211,13 +211,13 @@
                     <div x-show="tipoPago === 'transferencia'">
                         <x-input-label for="captura_pago" value="Captura de pago" />
                         <input id="captura_pago" name="captura_pago" type="file" accept="image/*"
-                               class="mt-1.5 block w-full text-sm text-gray-600 file:mr-3 file:py-2 file:px-3 file:rounded-lg file:border-0 file:bg-blue-50 file:text-blue-700 file:text-sm file:font-medium">
+                               class="mt-1.5 block w-full text-sm text-gray-600 file:mr-3 file:py-2 file:px-3 file:rounded-lg file:border-0 file:bg-[#9c0720]/10 file:text-[#9c0720] file:text-sm file:font-medium">
                     </div>
 
                     <div>
                         <x-input-label for="observaciones" value="Observaciones" />
                         <textarea id="observaciones" name="observaciones" rows="2"
-                                  class="mt-1.5 block w-full rounded-lg border border-gray-300 px-3.5 py-2.5 text-sm text-gray-900 focus:border-blue-700 focus:outline-none focus:ring-1 focus:ring-blue-700"></textarea>
+                                  class="mt-1.5 block w-full rounded-lg border border-gray-300 px-3.5 py-2.5 text-sm text-gray-900 focus:border-[#9c0720] focus:outline-none focus:ring-1 focus:ring-[#9c0720]"></textarea>
                     </div>
 
                     <x-primary-button>Registrar</x-primary-button>

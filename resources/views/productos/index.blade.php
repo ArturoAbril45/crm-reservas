@@ -16,7 +16,7 @@
 
     @if ($almacenes->isEmpty())
         <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-12 text-center text-gray-500">
-            Todavía no hay almacenes creados. <a href="{{ route('almacenes') }}" class="text-blue-700 font-medium hover:text-blue-800">Creá uno primero</a>.
+            Todavía no hay almacenes creados. <a href="{{ route('almacenes') }}" class="text-[#9c0720] font-medium hover:text-[#7c0519]">Creá uno primero</a>.
         </div>
     @else
         <div x-data="{
@@ -36,7 +36,7 @@
                 },
              }">
             @if (session('status'))
-                <div class="mb-6 px-4 py-3 rounded-xl bg-blue-50 text-blue-700 text-sm border border-blue-100">
+                <div class="mb-6 px-4 py-3 rounded-xl bg-[#9c0720]/10 text-[#9c0720] text-sm border border-[#9c0720]/15">
                     {{ session('status') }}
                 </div>
             @endif
@@ -52,7 +52,7 @@
                     <form method="GET" action="{{ route('productos') }}" class="flex items-center gap-3">
                         <label class="text-sm font-medium text-gray-700">Ver stock y precio de</label>
                         <select name="almacen" onchange="this.form.submit()"
-                                class="rounded-lg border border-gray-300 px-3.5 py-2 text-sm text-gray-900 focus:border-blue-700 focus:outline-none focus:ring-1 focus:ring-blue-700">
+                                class="rounded-lg border border-gray-300 px-3.5 py-2 text-sm text-gray-900 focus:border-[#9c0720] focus:outline-none focus:ring-1 focus:ring-[#9c0720]">
                             @foreach ($almacenes as $a)
                                 <option value="{{ $a->id }}" @selected($almacenActual && $almacenActual->id === $a->id)>{{ $a->nombre }} — {{ $a->sucursal->nombre ?? '—' }}</option>
                             @endforeach
@@ -140,7 +140,7 @@
                                                     <button @click="menu = false; editar({{ \Illuminate\Support\Js::from($editData) }})" class="block w-full px-3.5 py-2 text-xs font-medium text-gray-600 hover:bg-gray-50">
                                                         Editar
                                                     </button>
-                                                    <button @click="menu = false; abierto = (abierto === {{ $producto->id }} ? null : {{ $producto->id }})" class="block w-full px-3.5 py-2 text-xs font-medium text-blue-700 hover:bg-gray-50">
+                                                    <button @click="menu = false; abierto = (abierto === {{ $producto->id }} ? null : {{ $producto->id }})" class="block w-full px-3.5 py-2 text-xs font-medium text-[#9c0720] hover:bg-gray-50">
                                                         Presentaciones
                                                     </button>
                                                     <button @click="menu = false; abiertoPrecio = (abiertoPrecio === {{ $producto->id }} ? null : {{ $producto->id }})" class="block w-full px-3.5 py-2 text-xs font-medium text-gray-600 hover:bg-gray-50">
@@ -185,7 +185,7 @@
                                                         </div>
                                                     </div>
                                                 @endforeach
-                                                <button type="submit" class="rounded-lg bg-blue-700 px-3.5 py-2 text-xs font-medium text-white hover:bg-blue-800">
+                                                <button type="submit" class="rounded-lg bg-[#9c0720] px-3.5 py-2 text-xs font-medium text-white hover:bg-[#7c0519]">
                                                     Guardar precios por local
                                                 </button>
                                             </form>
@@ -222,7 +222,7 @@
                                                         <form method="POST" action="{{ route('productos.presentaciones.activar', [$producto, $presentacion]) }}">
                                                             @csrf
                                                             <button type="submit"
-                                                                    class="rounded-lg px-2.5 py-1.5 text-xs font-medium {{ $presentacion->activo ? 'bg-blue-50 text-blue-700 hover:bg-blue-100' : 'bg-gray-100 text-gray-500 hover:bg-gray-200' }}">
+                                                                    class="rounded-lg px-2.5 py-1.5 text-xs font-medium {{ $presentacion->activo ? 'bg-[#9c0720]/10 text-[#9c0720] hover:bg-[#9c0720]/15' : 'bg-gray-100 text-gray-500 hover:bg-gray-200' }}">
                                                                 {{ $presentacion->activo ? 'Habilitada' : 'Deshabilitada' }}
                                                             </button>
                                                         </form>
@@ -254,7 +254,7 @@
                                                     <input type="number" name="precio" min="0" step="0.01"
                                                            class="w-24 rounded-lg border border-gray-300 px-2.5 py-1.5 text-xs">
                                                 </div>
-                                                <button type="submit" class="rounded-lg bg-blue-700 px-3 py-1.5 text-xs font-medium text-white hover:bg-blue-800">
+                                                <button type="submit" class="rounded-lg bg-[#9c0720] px-3 py-1.5 text-xs font-medium text-white hover:bg-[#7c0519]">
                                                     Agregar
                                                 </button>
                                             </form>
@@ -283,7 +283,7 @@
                         @if ($almacenes->count() > 1)
                             <div>
                                 <x-input-label for="almacen_id" value="Almacén (para el stock inicial)" />
-                                <select id="almacen_id" name="almacen_id" class="mt-1.5 block w-full rounded-lg border border-gray-300 px-3.5 py-2.5 text-sm text-gray-900 focus:border-blue-700 focus:outline-none focus:ring-1 focus:ring-blue-700">
+                                <select id="almacen_id" name="almacen_id" class="mt-1.5 block w-full rounded-lg border border-gray-300 px-3.5 py-2.5 text-sm text-gray-900 focus:border-[#9c0720] focus:outline-none focus:ring-1 focus:ring-[#9c0720]">
                                     @foreach ($almacenes as $a)
                                         <option value="{{ $a->id }}" @selected($almacenActual && $almacenActual->id === $a->id)>{{ $a->nombre }} — {{ $a->sucursal->nombre ?? '—' }}</option>
                                     @endforeach
@@ -301,7 +301,7 @@
                                 @foreach ($tipos as $tipo)
                                     <button type="button" @click="tipoItem = '{{ $tipo }}'"
                                             class="rounded-lg border py-2 text-xs font-medium transition-colors"
-                                            :class="tipoItem === '{{ $tipo }}' ? 'border-blue-700 text-blue-700 bg-blue-50' : 'border-gray-200 text-gray-500 hover:border-gray-300'">
+                                            :class="tipoItem === '{{ $tipo }}' ? 'border-[#9c0720] text-[#9c0720] bg-[#9c0720]/10' : 'border-gray-200 text-gray-500 hover:border-gray-300'">
                                         {{ $tipo }}
                                     </button>
                                 @endforeach
@@ -325,7 +325,7 @@
                         <div>
                             <x-input-label for="unidad" value="Presentación principal" />
                             <input id="unidad" name="unidad" type="text" list="unidades-sugeridas" required value="{{ old('unidad') }}" placeholder="Ej. Unidad, Jaba de 12, Six pack..."
-                                   class="mt-1.5 block w-full rounded-lg border border-gray-300 px-3.5 py-2.5 text-sm text-gray-900 focus:border-blue-700 focus:outline-none focus:ring-1 focus:ring-blue-700">
+                                   class="mt-1.5 block w-full rounded-lg border border-gray-300 px-3.5 py-2.5 text-sm text-gray-900 focus:border-[#9c0720] focus:outline-none focus:ring-1 focus:ring-[#9c0720]">
                             <x-input-error :messages="$errors->get('unidad')" class="mt-2" />
                         </div>
 
@@ -382,7 +382,7 @@
                                     @foreach ($tipos as $tipo)
                                         <button type="button" @click="editForm.tipo_item = '{{ $tipo }}'"
                                                 class="rounded-lg border py-2 text-xs font-medium transition-colors"
-                                                :class="editForm.tipo_item === '{{ $tipo }}' ? 'border-blue-700 text-blue-700 bg-blue-50' : 'border-gray-200 text-gray-500 hover:border-gray-300'">
+                                                :class="editForm.tipo_item === '{{ $tipo }}' ? 'border-[#9c0720] text-[#9c0720] bg-[#9c0720]/10' : 'border-gray-200 text-gray-500 hover:border-gray-300'">
                                             {{ $tipo }}
                                         </button>
                                     @endforeach

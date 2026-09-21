@@ -35,7 +35,14 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect()->intended(route('reservas', absolute: false));
+        // Los usuarios que pueden trabajar en más de una sucursal eligen con cuál
+        // entrar justo después de loguearse; los que están fijos a una sola sucursal
+        // (sin el permiso cambiar_sucursal) van directo a Reservas con la que ya tengan.
+        $destino = Auth::user()->puedeVer('cambiar_sucursal')
+            ? route('sucursales.seleccionar', absolute: false)
+            : route('reservas', absolute: false);
+
+        return redirect()->intended($destino);
     }
 
     /**

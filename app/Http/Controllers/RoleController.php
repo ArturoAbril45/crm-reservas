@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Hash;
 class RoleController extends Controller
 {
     public const MODULOS = [
+        'reservas'       => 'Reserva Habitación',
         'almacenes'      => 'Almacenes',
         'productos'      => 'Productos',
         'ventas'         => 'Venta',
@@ -16,8 +17,12 @@ class RoleController extends Controller
         'compras'        => 'Compras',
         'gastos'         => 'Gastos',
         'caja'           => 'Caja',
+        'cambiar_sucursal' => 'Selector de sucursal (menú lateral)',
         'sucursales.index' => 'Sucursales',
         'reporte-ventas' => 'Reporte ventas',
+        'whatsapp'       => 'WhatsApp API',
+        'solicitudes'    => 'Solicitudes',
+        'flujos'         => 'Conexión de flujos',
         'roles'          => 'Roles',
     ];
 

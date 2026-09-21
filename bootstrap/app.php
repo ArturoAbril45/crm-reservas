@@ -16,6 +16,10 @@ return Application::configure(basePath: dirname(__DIR__))
             'permiso' => \App\Http\Middleware\CheckPermiso::class,
             'horario' => \App\Http\Middleware\CheckHorario::class,
         ]);
+
+        $middleware->validateCsrfTokens(except: [
+            'whatsapp/webhook',
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         $exceptions->shouldRenderJsonWhen(

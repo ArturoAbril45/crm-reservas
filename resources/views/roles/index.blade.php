@@ -10,13 +10,13 @@
     <div x-data="{ abierto: {{ $errors->any() ? 'true' : 'false' }}, editando: null }">
 
     @if (session('status'))
-        <div class="mb-6 px-4 py-3 rounded-xl bg-blue-50 text-blue-700 text-sm border border-blue-100">
+        <div class="mb-6 px-4 py-3 rounded-xl bg-[#9c0720]/10 text-[#9c0720] text-sm border border-[#9c0720]/15">
             {{ session('status') }}
         </div>
     @endif
 
     <div class="flex justify-end mb-4">
-        <button @click="abierto = true" class="inline-flex items-center gap-2 rounded-lg bg-blue-700 px-4 py-2.5 text-sm font-medium text-white hover:bg-blue-800">
+        <button @click="abierto = true" class="inline-flex items-center gap-2 rounded-lg bg-[#9c0720] px-4 py-2.5 text-sm font-medium text-white hover:bg-[#7c0519]">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4">
                 <path d="M12 5v14M5 12h14" />
             </svg>
@@ -47,7 +47,7 @@
                             </td>
                             <td class="px-6 py-4 text-gray-500">{{ $usuario->username ?? '—' }}</td>
                             <td class="px-6 py-4">
-                                <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-blue-50 text-blue-700">
+                                <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-[#9c0720]/10 text-[#9c0720]">
                                     {{ $usuario->role }}
                                 </span>
                             </td>
@@ -64,7 +64,7 @@
                                 @endif
                             </td>
                             <td class="px-6 py-4 text-right">
-                                <button @click="editando = {{ $usuario->id }}" class="text-sm font-medium text-blue-700 hover:text-blue-800">
+                                <button @click="editando = {{ $usuario->id }}" class="text-sm font-medium text-[#9c0720] hover:text-[#7c0519]">
                                     Editar
                                 </button>
                             </td>
@@ -135,7 +135,7 @@
                                     <input type="checkbox" name="permisos[]" value="{{ $key }}"
                                            {{ in_array($key, old('permisos', [])) ? 'checked' : '' }}
                                            class="peer sr-only">
-                                    <span class="h-5 w-9 rounded-full bg-gray-200 peer-checked:bg-blue-700 transition-colors"></span>
+                                    <span class="h-5 w-9 rounded-full bg-gray-200 peer-checked:bg-[#9c0720] transition-colors"></span>
                                     <span class="absolute left-0.5 top-0.5 h-4 w-4 rounded-full bg-white transition-transform peer-checked:translate-x-4"></span>
                                 </span>
                             </label>
@@ -149,7 +149,7 @@
                         <x-input-label value="Restricción de horario de acceso" />
                         <label class="relative inline-flex items-center shrink-0 cursor-pointer">
                             <input type="checkbox" name="horario_activo" value="1" {{ old('horario_activo') ? 'checked' : '' }} class="peer sr-only">
-                            <span class="h-5 w-9 rounded-full bg-gray-200 peer-checked:bg-blue-700 transition-colors"></span>
+                            <span class="h-5 w-9 rounded-full bg-gray-200 peer-checked:bg-[#9c0720] transition-colors"></span>
                             <span class="absolute left-0.5 top-0.5 h-4 w-4 rounded-full bg-white transition-transform peer-checked:translate-x-4"></span>
                         </label>
                     </div>
@@ -174,7 +174,7 @@
                         <x-input-label value="Días de acceso" class="text-xs mb-1" />
                         <div class="flex flex-wrap gap-2">
                             @foreach ($diasSemana as $numero => $label)
-                                <label class="flex items-center gap-1.5 px-2.5 py-1 rounded-lg border border-gray-200 text-xs text-gray-600 cursor-pointer has-checked:bg-blue-50 has-checked:border-blue-200 has-checked:text-blue-700">
+                                <label class="flex items-center gap-1.5 px-2.5 py-1 rounded-lg border border-gray-200 text-xs text-gray-600 cursor-pointer has-checked:bg-[#9c0720]/10 has-checked:border-[#9c0720]/25 has-checked:text-[#9c0720]">
                                     <input type="checkbox" name="dias_trabajo[]" value="{{ $numero }}" {{ in_array($numero, old('dias_trabajo', [1,2,3,4,5,6])) ? 'checked' : '' }} class="h-3.5 w-3.5">
                                     {{ $label }}
                                 </label>
@@ -221,13 +221,13 @@
                                         <input type="checkbox" name="permisos[]" value="{{ $key }}"
                                                {{ in_array($key, $usuario->permisos ?? []) ? 'checked' : '' }}
                                                class="peer sr-only">
-                                        <span class="h-5 w-9 rounded-full bg-gray-200 peer-checked:bg-blue-700 transition-colors"></span>
+                                        <span class="h-5 w-9 rounded-full bg-gray-200 peer-checked:bg-[#9c0720] transition-colors"></span>
                                         <span class="absolute left-0.5 top-0.5 h-4 w-4 rounded-full bg-white transition-transform peer-checked:translate-x-4"></span>
                                     </span>
                                 </label>
                             @endforeach
                         </div>
-                        <button type="submit" class="w-full py-2 rounded-lg bg-blue-700 text-white text-sm font-medium hover:bg-blue-800">
+                        <button type="submit" class="w-full py-2 rounded-lg bg-[#9c0720] text-white text-sm font-medium hover:bg-[#7c0519]">
                             Guardar módulos
                         </button>
                     </form>
@@ -241,7 +241,7 @@
                                     <x-input-label value="Restricción de horario" />
                                     <label class="relative inline-flex items-center shrink-0 cursor-pointer">
                                         <input type="checkbox" name="horario_activo" value="1" {{ $usuario->horario_activo ? 'checked' : '' }} class="peer sr-only">
-                                        <span class="h-5 w-9 rounded-full bg-gray-200 peer-checked:bg-blue-700 transition-colors"></span>
+                                        <span class="h-5 w-9 rounded-full bg-gray-200 peer-checked:bg-[#9c0720] transition-colors"></span>
                                         <span class="absolute left-0.5 top-0.5 h-4 w-4 rounded-full bg-white transition-transform peer-checked:translate-x-4"></span>
                                     </label>
                                 </div>
@@ -264,7 +264,7 @@
                                     <div class="flex flex-wrap gap-2">
                                         @php $diasActivos = array_filter(explode(',', $usuario->dias_trabajo ?? ''), fn ($d) => $d !== ''); @endphp
                                         @foreach ($diasSemana as $numero => $label)
-                                            <label class="flex items-center gap-1.5 px-2.5 py-1 rounded-lg border border-gray-200 text-xs text-gray-600 cursor-pointer has-checked:bg-blue-50 has-checked:border-blue-200 has-checked:text-blue-700">
+                                            <label class="flex items-center gap-1.5 px-2.5 py-1 rounded-lg border border-gray-200 text-xs text-gray-600 cursor-pointer has-checked:bg-[#9c0720]/10 has-checked:border-[#9c0720]/25 has-checked:text-[#9c0720]">
                                                 <input type="checkbox" name="dias_trabajo[]" value="{{ $numero }}" {{ in_array((string) $numero, $diasActivos) ? 'checked' : '' }} class="h-3.5 w-3.5">
                                                 {{ $label }}
                                             </label>

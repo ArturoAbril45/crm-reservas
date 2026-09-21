@@ -39,7 +39,7 @@
 
         <!-- Remember Me -->
         <label for="remember_me" class="flex items-center gap-2">
-            <input id="remember_me" type="checkbox" class="rounded border-gray-300 text-blue-700 focus:ring-blue-700" name="remember">
+            <input id="remember_me" type="checkbox" class="rounded border-gray-300 text-[#9c0720] focus:ring-[#9c0720]" name="remember">
             <span class="text-sm text-gray-600">{{ __('Recordarme') }}</span>
         </label>
 

@@ -6,7 +6,7 @@
     <div x-data="traspasoForm()">
 
     @if (session('status'))
-        <div class="mb-6 px-4 py-3 rounded-xl bg-blue-50 text-blue-700 text-sm border border-blue-100">
+        <div class="mb-6 px-4 py-3 rounded-xl bg-[#9c0720]/10 text-[#9c0720] text-sm border border-[#9c0720]/15">
             {{ session('status') }}
         </div>
     @endif
@@ -24,7 +24,7 @@
             <div class="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
                 <h2 class="font-semibold text-gray-900">Mi sucursal</h2>
                 @if ($sucursal && $otras->count())
-                    <button @click="abierto = true" class="inline-flex items-center gap-2 rounded-lg bg-blue-700 px-3.5 py-2 text-sm font-medium text-white hover:bg-blue-800">
+                    <button @click="abierto = true" class="inline-flex items-center gap-2 rounded-lg bg-[#9c0720] px-3.5 py-2 text-sm font-medium text-white hover:bg-[#7c0519]">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4">
                             <path d="M12 5v14M5 12h14" />
                         </svg>
@@ -35,7 +35,7 @@
 
             @if ($sucursal)
                 <div class="px-6 py-5 flex items-center gap-4">
-                    <span class="flex h-11 w-11 items-center justify-center rounded-xl bg-blue-50 text-blue-700 shrink-0">
+                    <span class="flex h-11 w-11 items-center justify-center rounded-xl bg-[#9c0720]/10 text-[#9c0720] shrink-0">
                         <x-nav-icon name="store" class="h-5 w-5" />
                     </span>
                     <div>
@@ -106,7 +106,7 @@
                 <div>
                     <x-input-label for="sucursal_origen_id" value="Sucursal de origen" />
                     <select id="sucursal_origen_id" name="sucursal_origen_id" x-model="sucursalId" @change="items = [itemVacio()]" required
-                            class="mt-1.5 block w-full rounded-lg border border-gray-300 px-3.5 py-2.5 text-sm text-gray-900 focus:border-blue-700 focus:outline-none focus:ring-1 focus:ring-blue-700">
+                            class="mt-1.5 block w-full rounded-lg border border-gray-300 px-3.5 py-2.5 text-sm text-gray-900 focus:border-[#9c0720] focus:outline-none focus:ring-1 focus:ring-[#9c0720]">
                         <option value="" disabled selected>Seleccioná una sucursal</option>
                         @foreach ($otras as $otra)
                             <option value="{{ $otra->id }}">{{ $otra->nombre }}</option>
@@ -147,7 +147,7 @@
                         </div>
                     </template>
 
-                    <button type="button" @click="items.push(itemVacio())" class="text-xs font-medium text-blue-700 hover:text-blue-800">
+                    <button type="button" @click="items.push(itemVacio())" class="text-xs font-medium text-[#9c0720] hover:text-[#7c0519]">
                         + Agregar producto
                     </button>
                     <p class="mt-1.5 text-xs text-gray-400">Podés combinar distintas presentaciones del mismo producto (ej. 2 jabas de 12 + 5 unidades sueltas).</p>

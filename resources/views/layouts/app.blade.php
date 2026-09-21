@@ -15,12 +15,30 @@
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
     <body class="font-sans antialiased">
+        @if (session('sucursal_entrando'))
+            <div id="overlay-entrando" class="fixed inset-0 z-[9999] bg-white flex flex-col items-center justify-center gap-4">
+                <svg class="animate-spin h-8 w-8 text-[#9c0720]" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+                </svg>
+                <p class="text-sm font-medium text-gray-700">Entrando a {{ session('sucursal_entrando') }}...</p>
+            </div>
+            <script>
+                // Se queda cubriendo TODA la pantalla en blanco hasta que la página de
+                // destino terminó de cargar de verdad (imágenes, CSS, todo) — así no se
+                // ve ni un parpadeo del contenido a medio renderizar antes de mostrarlo.
+                window.addEventListener('load', function () {
+                    var overlay = document.getElementById('overlay-entrando');
+                    if (overlay) overlay.remove();
+                });
+            </script>
+        @endif
         <div class="min-h-screen bg-gray-50">
             @include('layouts.navigation')
 
             <div class="lg:ml-[272px]">
                 <!-- Barra superior -->
-                <header class="hidden lg:flex items-center justify-between h-16 px-6 mt-6 mr-4 bg-white rounded-2xl shadow-sm border border-gray-100">
+                <header class="no-print hidden lg:flex items-center justify-between h-16 px-6 mt-6 mr-4 bg-white rounded-2xl shadow-sm border border-gray-100">
                     <div>
                         @isset($header)
                             <h1 class="font-semibold text-lg text-gray-900">{{ $header }}</h1>
@@ -38,7 +56,7 @@
                         <x-dropdown align="right" width="48">
                             <x-slot name="trigger">
                                 <button class="flex items-center gap-2 text-sm font-medium text-gray-700 hover:text-gray-900">
-                                    <span class="flex h-8 w-8 items-center justify-center rounded-full bg-blue-50 text-blue-700 font-semibold text-xs">
+                                    <span class="flex h-8 w-8 items-center justify-center rounded-full bg-[#9c0720]/10 text-[#9c0720] font-semibold text-xs">
                                         {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
                                     </span>
                                     {{ Auth::user()->name }}
@@ -58,7 +76,7 @@
 
                 <!-- Encabezado móvil -->
                 @isset($header)
-                    <div class="lg:hidden bg-white border-b border-gray-100 px-4 py-4">
+                    <div class="no-print lg:hidden bg-white border-b border-gray-100 px-4 py-4">
                         <h1 class="font-semibold text-lg text-gray-900">{{ $header }}</h1>
                     </div>
                 @endisset

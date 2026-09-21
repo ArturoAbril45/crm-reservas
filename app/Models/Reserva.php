@@ -9,7 +9,7 @@ class Reserva extends Model
     protected $fillable = [
         'habitacion_id', 'semana', 'nombre', 'cedula', 'telefono',
         'deposito_estado', 'estado', 'observaciones', 'foto_cedula', 'foto_deposito',
-        'prenda_id', 'usuario_id',
+        'prenda_id', 'usuario_id', 'solicitud_whatsapp_id',
     ];
 
     protected $casts = [

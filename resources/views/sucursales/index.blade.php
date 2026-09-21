@@ -25,7 +25,7 @@
         <!-- Lista -->
         <div class="lg:col-span-2 bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
             @if (session('status'))
-                <div class="px-6 py-3 bg-blue-50 text-blue-700 text-sm border-b border-blue-100">
+                <div class="px-6 py-3 bg-[#9c0720]/10 text-[#9c0720] text-sm border-b border-[#9c0720]/15">
                     {{ session('status') }}
                 </div>
             @endif
@@ -53,7 +53,7 @@
                             </td>
                             <td class="px-6 py-4 text-right">
                                 <button @click="editar({{ \Illuminate\Support\Js::from($sucursal->only(['id', 'nombre', 'direccion', 'telefono', 'activa'])) }})"
-                                        class="text-sm font-medium text-blue-700 hover:text-blue-800">
+                                        class="text-sm font-medium text-[#9c0720] hover:text-[#7c0519]">
                                     Editar
                                 </button>
                             </td>
@@ -132,7 +132,7 @@
                     <span class="text-sm text-gray-700">Sucursal activa</span>
                     <span class="relative inline-flex items-center">
                         <input type="checkbox" name="activa" value="1" x-model="activa" class="peer sr-only">
-                        <span class="h-5 w-9 rounded-full bg-gray-200 peer-checked:bg-blue-700 transition-colors"></span>
+                        <span class="h-5 w-9 rounded-full bg-gray-200 peer-checked:bg-[#9c0720] transition-colors"></span>
                         <span class="absolute left-0.5 top-0.5 h-4 w-4 rounded-full bg-white transition-transform peer-checked:translate-x-4"></span>
                     </span>
                 </label>

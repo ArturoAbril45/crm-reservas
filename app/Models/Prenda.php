@@ -16,4 +16,11 @@ class Prenda extends Model
     {
         return $this->belongsTo(Sucursal::class);
     }
+
+    // La reserva que dejó esta prenda como garantía (para poder mostrar en qué
+    // semana y qué habitación quedó, en la lista de "Prendas pendientes").
+    public function reserva()
+    {
+        return $this->hasOne(Reserva::class);
+    }
 }

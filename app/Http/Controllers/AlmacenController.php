@@ -38,4 +38,29 @@ class AlmacenController extends Controller
 
         return redirect()->route('almacenes')->with('status', 'Almacén creado correctamente.');
     }
+
+    public function update(Request $request, Almacen $almacen)
+    {
+        $data = $request->validate([
+            'nombre'    => ['required', 'string', 'max:255'],
+            'ubicacion' => ['nullable', 'string', 'max:255'],
+        ]);
+
+        $almacen->update($data);
+
+        return redirect()->route('almacenes')->with('status', 'Almacén actualizado correctamente.');
+    }
+
+    public function destroy(Almacen $almacen)
+    {
+        if ($almacen->compras()->exists()) {
+            return back()->withErrors(['nombre' => 'Este almacén tiene compras registradas, no se puede eliminar.']);
+        }
+
+        // Borrar el almacén también borra en cascada su inventario y sus precios
+        // locales (stock y precios propios de este almacén), no el catálogo global.
+        $almacen->delete();
+
+        return redirect()->route('almacenes')->with('status', 'Almacén eliminado correctamente.');
+    }
 }

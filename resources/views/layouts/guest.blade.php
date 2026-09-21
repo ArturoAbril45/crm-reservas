@@ -18,7 +18,7 @@
         <div class="min-h-screen flex">
 
             <!-- Panel de marca -->
-            <div class="hidden lg:flex lg:w-2/5 xl:w-1/3 bg-blue-700 flex-col justify-between p-12">
+            <div class="hidden lg:flex lg:w-2/5 xl:w-1/3 bg-[#9c0720] flex-col justify-between p-12">
                 <a href="/" class="flex items-center gap-3">
                     <span class="flex h-10 w-10 items-center justify-center rounded-lg bg-white/10">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 text-white">
@@ -47,7 +47,7 @@
             <div class="flex flex-1 flex-col items-center justify-center px-6 py-12">
                 <div class="w-full sm:max-w-sm">
                     <div class="mb-8 flex flex-col items-center gap-2 lg:hidden">
-                        <span class="flex h-10 w-10 items-center justify-center rounded-lg bg-blue-700">
+                        <span class="flex h-10 w-10 items-center justify-center rounded-lg bg-[#9c0720]">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 text-white">
                                 <rect x="3" y="4" width="18" height="18" rx="2" />
                                 <path d="M16 2v4M8 2v4M3 10h18" />

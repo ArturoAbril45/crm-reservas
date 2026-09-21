@@ -14,4 +14,9 @@ class Habitacion extends Model
     {
         return $this->belongsTo(Sucursal::class);
     }
+
+    public function reservas()
+    {
+        return $this->hasMany(Reserva::class);
+    }
 }

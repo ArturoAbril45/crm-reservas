@@ -6,7 +6,7 @@
     <div x-data="{ abierto: false, tipo: 'INGRESO' }">
 
     @if (session('status'))
-        <div class="mb-6 px-4 py-3 rounded-xl bg-blue-50 text-blue-700 text-sm border border-blue-100">
+        <div class="mb-6 px-4 py-3 rounded-xl bg-[#9c0720]/10 text-[#9c0720] text-sm border border-[#9c0720]/15">
             {{ session('status') }}
         </div>
     @endif
@@ -26,10 +26,10 @@
             <form method="GET" action="{{ route('caja') }}" class="flex items-center gap-3">
                 <x-input-label for="fecha" value="Fecha" class="shrink-0" />
                 <input id="fecha" name="fecha" type="date" value="{{ $fecha }}" onchange="this.form.submit()"
-                       class="block rounded-lg border border-gray-300 px-3.5 py-2 text-sm text-gray-900 focus:border-blue-700 focus:outline-none focus:ring-1 focus:ring-blue-700">
+                       class="block rounded-lg border border-gray-300 px-3.5 py-2 text-sm text-gray-900 focus:border-[#9c0720] focus:outline-none focus:ring-1 focus:ring-[#9c0720]">
             </form>
             @if ($sucursal)
-                <button @click="abierto = true" class="inline-flex items-center gap-2 rounded-lg bg-blue-700 px-4 py-2.5 text-sm font-medium text-white hover:bg-blue-800">
+                <button @click="abierto = true" class="inline-flex items-center gap-2 rounded-lg bg-[#9c0720] px-4 py-2.5 text-sm font-medium text-white hover:bg-[#7c0519]">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4">
                         <path d="M12 5v14M5 12h14" />
                     </svg>
@@ -99,7 +99,7 @@
                         <template x-for="t in ['INGRESO', 'EGRESO', 'APERTURA', 'CIERRE']" :key="t">
                             <button type="button" @click="tipo = t"
                                     class="rounded-lg border py-2 text-xs font-medium transition-colors"
-                                    :class="tipo === t ? 'border-blue-700 text-blue-700 bg-blue-50' : 'border-gray-200 text-gray-500 hover:border-gray-300'"
+                                    :class="tipo === t ? 'border-[#9c0720] text-[#9c0720] bg-[#9c0720]/10' : 'border-gray-200 text-gray-500 hover:border-gray-300'"
                                     x-text="t"></button>
                         </template>
                     </div>

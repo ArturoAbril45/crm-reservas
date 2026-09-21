@@ -14,6 +14,13 @@ class SucursalController extends Controller
         return view('sucursales.index', compact('sucursales'));
     }
 
+    public function seleccionar()
+    {
+        $sucursales = Sucursal::where('activa', true)->orderBy('nombre')->get();
+
+        return view('sucursales.seleccionar', compact('sucursales'));
+    }
+
     public function store(Request $request)
     {
         $data = $request->validate([
@@ -32,8 +39,9 @@ class SucursalController extends Controller
     public function cambiar(Sucursal $sucursal)
     {
         session(['sucursal_actual_id' => $sucursal->id]);
+        session()->flash('sucursal_entrando', $sucursal->nombre);
 
-        return redirect()->back();
+        return redirect()->route('reservas');
     }
 
     public function update(Request $request, Sucursal $sucursal)

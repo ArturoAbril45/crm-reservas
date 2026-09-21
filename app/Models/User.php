@@ -35,10 +35,6 @@ class User extends Authenticatable
 
     public function puedeVer(string $modulo): bool
     {
-        if ($modulo === 'reservas') {
-            return true;
-        }
-
         return in_array($modulo, $this->permisos ?? [], true);
     }
 

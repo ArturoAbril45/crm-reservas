@@ -19,4 +19,9 @@ class Almacen extends Model
     {
         return $this->hasMany(Inventario::class);
     }
+
+    public function compras()
+    {
+        return $this->hasMany(Compra::class);
+    }
 }

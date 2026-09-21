@@ -5,7 +5,7 @@
 
     <div class="mb-6 flex items-center justify-between gap-3 flex-wrap">
         <p class="text-sm text-gray-500">Registrá lo que ya existe físicamente en cada local. Esto no crea compras, gastos ni movimientos de caja.</p>
-        <a href="{{ route('productos') }}" class="inline-flex items-center gap-1.5 text-sm font-medium text-blue-700 hover:text-blue-800">
+        <a href="{{ route('productos') }}" class="inline-flex items-center gap-1.5 text-sm font-medium text-[#9c0720] hover:text-[#7c0519]">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4">
                 <path d="m12 19-7-7 7-7M19 12H5" />
             </svg>
@@ -14,7 +14,7 @@
     </div>
 
     @if (session('status'))
-        <div class="mb-6 px-4 py-3 rounded-xl bg-blue-50 text-blue-700 text-sm border border-blue-100">
+        <div class="mb-6 px-4 py-3 rounded-xl bg-[#9c0720]/10 text-[#9c0720] text-sm border border-[#9c0720]/15">
             {{ session('status') }}
         </div>
     @endif
@@ -33,7 +33,7 @@
                 <div>
                     <x-input-label for="almacen_id" value="Local / almacén" />
                     <select id="almacen_id" name="almacen_id" required
-                            class="mt-1.5 block w-full rounded-lg border border-gray-300 px-3.5 py-2.5 text-sm text-gray-900 focus:border-blue-700 focus:outline-none focus:ring-1 focus:ring-blue-700">
+                            class="mt-1.5 block w-full rounded-lg border border-gray-300 px-3.5 py-2.5 text-sm text-gray-900 focus:border-[#9c0720] focus:outline-none focus:ring-1 focus:ring-[#9c0720]">
                         <option value="" disabled {{ $almacenActual ? '' : 'selected' }}>Seleccioná un almacén</option>
                         @foreach ($almacenes as $a)
                             <option value="{{ $a->id }}" @selected($almacenActual && $almacenActual->id === $a->id)>{{ $a->nombre }} — {{ $a->sucursal->nombre ?? '—' }}</option>
@@ -58,9 +58,9 @@
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
                     @foreach ($productos as $producto)
                         <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-4"
-                             :class="aplicar[{{ $producto->id }}] ? 'ring-2 ring-blue-600' : ''">
+                             :class="aplicar[{{ $producto->id }}] ? 'ring-2 ring-[#9c0720]' : ''">
                             <div class="flex items-start gap-2.5 mb-3">
-                                <input type="checkbox" x-model="aplicar[{{ $producto->id }}]" class="mt-1 h-4 w-4 rounded border-gray-300 text-blue-700 focus:ring-blue-700">
+                                <input type="checkbox" x-model="aplicar[{{ $producto->id }}]" class="mt-1 h-4 w-4 rounded border-gray-300 text-[#9c0720] focus:ring-[#9c0720]">
                                 <div class="min-w-0">
                                     <p class="text-sm font-semibold text-gray-900 truncate">{{ $producto->nombre }}</p>
                                     <p class="text-xs text-gray-400">{{ $producto->codigo }}</p>

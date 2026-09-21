@@ -2,16 +2,21 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Concerns\ScopedToSucursal;
 use App\Models\Cliente;
 use App\Models\Habitacion;
 use App\Models\Prenda;
 use App\Models\Reserva;
+use App\Models\SolicitudReservaWhatsapp;
 use App\Models\Sucursal;
+use App\Services\WhatsappBot;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class ReservaController extends Controller
 {
+    use ScopedToSucursal;
+
     public function index(Request $request)
     {
         $sucursales = $this->sucursalesConHabitaciones();
@@ -39,18 +44,19 @@ class ReservaController extends Controller
             'habitaciones' => $habitaciones->where('sucursal_id', $s->id)->values(),
         ]);
 
-        $prendas = Prenda::latest()->limit(20)->get();
+        $prendas = Prenda::where('estado', '!=', 'devuelta')->with('reserva.habitacion')->latest()->limit(20)->get();
         $clientes = Cliente::latest()->limit(20)->get();
 
-        // Para el listado imprimible: qué clientes dejaron prenda (depósito), identificados
-        // por cédula a través de las reservas que sí quedaron con una prenda asociada.
-        $cedulasConPrenda = Reserva::whereNotNull('prenda_id')->pluck('cedula');
-
-        // Y en qué habitación está cada cliente esta semana (por cédula, misma reserva activa
-        // que ya se cargó arriba para el tablero de habitaciones).
-        $habitacionPorCedula = $reservas->mapWithKeys(fn ($reserva, $habitacionId) => [
-            $reserva->cedula => $habitaciones->firstWhere('id', $habitacionId)?->numero,
-        ]);
+        // Para mostrar "cuarto y semana" en el modal "Ver detalles" del cliente:
+        // el Cliente no tiene relación directa a Reserva, así que se busca por
+        // cédula la reserva no cancelada más reciente de cada uno.
+        $ultimaReservaPorCedula = Reserva::with('habitacion')
+            ->whereIn('cedula', $clientes->pluck('cedula'))
+            ->where('estado', '!=', 'Cancelada')
+            ->orderByDesc('semana')
+            ->get()
+            ->groupBy('cedula')
+            ->map(fn ($grupo) => $grupo->first());
 
         return view('reservas.index', [
             'hoteles' => $hoteles,
@@ -58,17 +64,41 @@ class ReservaController extends Controller
             'semanaAnterior' => $semana->copy()->subWeek()->toDateString(),
             'semanaSiguiente' => $semana->copy()->addWeek()->toDateString(),
             'reservas' => $reservas,
-            'habitacionPorCedula' => $habitacionPorCedula,
             'prendas' => $prendas,
             'clientes' => $clientes,
-            'cedulasConPrenda' => $cedulasConPrenda,
+            'ultimaReservaPorCedula' => $ultimaReservaPorCedula,
         ]);
     }
 
-    public function actualizarPrenda(Request $request, Prenda $prenda)
+    public function guardarPrenda(Request $request)
     {
         $data = $request->validate([
-            'estado' => ['required', 'in:pendiente,devuelta'],
+            'cliente_id'   => ['required', 'exists:clientes,id'],
+            'dejo_prenda'  => ['required', 'in:si,no'],
+            'descripcion'  => ['required_if:dejo_prenda,si', 'nullable', 'string', 'max:255'],
+        ]);
+
+        if ($data['dejo_prenda'] === 'no') {
+            return back()->with('status', 'Registrado: el cliente no dejó ninguna prenda en depósito.');
+        }
+
+        $cliente = Cliente::findOrFail($data['cliente_id']);
+        $sucursal = $this->sucursalActual($request);
+
+        Prenda::create([
+            'sucursal_id' => $sucursal?->id,
+            'descripcion' => $data['descripcion'],
+            'cliente'     => $cliente->nombre_completo,
+            'estado'      => 'confirmada',
+        ]);
+
+        return back()->with('status', 'Prenda registrada correctamente.');
+    }
+
+    public function actualizarPrenda(Request $request, Prenda $prenda, WhatsappBot $bot)
+    {
+        $data = $request->validate([
+            'estado' => ['required', 'in:confirmada,devuelta'],
             'foto'   => ['nullable', 'image', 'max:4096'],
         ]);
 
@@ -78,9 +108,73 @@ class ReservaController extends Controller
 
         $data['devuelta_at'] = $data['estado'] === 'devuelta' ? now() : null;
 
+        $eraDevuelta = $prenda->estado === 'devuelta';
+        $reserva = Reserva::where('prenda_id', $prenda->id)->first();
+
         $prenda->update($data);
 
+        if ($data['estado'] === 'devuelta' && ! $eraDevuelta) {
+            $this->avisarPrendaDevuelta($prenda, $reserva, $bot);
+        }
+
+        // Si esta prenda venía de una reserva anclada desde una solicitud de WhatsApp,
+        // al devolverse ya no hace falta seguir mostrando esa solicitud en el panel.
+        if ($data['estado'] === 'devuelta' && $reserva?->solicitud_whatsapp_id) {
+            SolicitudReservaWhatsapp::whereKey($reserva->solicitud_whatsapp_id)->delete();
+        }
+
         return back()->with('status', 'Prenda actualizada correctamente.');
+    }
+
+    /**
+     * Le avisa por WhatsApp al cliente que su prenda/depósito ya fue devuelto,
+     * adjuntando la foto que el admin cargó al marcarla como devuelta (o la que
+     * ya tenía guardada). Si no hay forma confiable de saber su número, no hace nada.
+     */
+    private function avisarPrendaDevuelta(Prenda $prenda, ?Reserva $reserva, WhatsappBot $bot): void
+    {
+        $numero = null;
+
+        if ($reserva?->solicitud_whatsapp_id) {
+            $numero = SolicitudReservaWhatsapp::find($reserva->solicitud_whatsapp_id)?->numero;
+        }
+
+        if (! $numero) {
+            $numero = $this->normalizarNumeroEcuador($reserva->telefono ?? null);
+        }
+
+        if (! $numero) {
+            return;
+        }
+
+        $nombre = $reserva->nombre ?? $prenda->cliente ?? '';
+        $mensaje = trim("Hola {$nombre}, te confirmamos que se devolvió tu prenda: {$prenda->descripcion}. ¡Gracias!");
+        $fotoUrl = $prenda->foto ? asset('storage/' . $prenda->foto) : null;
+
+        $bot->enviar($numero, $mensaje, $fotoUrl);
+    }
+
+    private function normalizarNumeroEcuador(?string $telefono): ?string
+    {
+        if (! $telefono) {
+            return null;
+        }
+
+        $digitos = preg_replace('/\D/', '', $telefono);
+
+        if (str_starts_with($digitos, '593') && strlen($digitos) === 12) {
+            return $digitos;
+        }
+
+        if (str_starts_with($digitos, '0') && strlen($digitos) === 10) {
+            return '593' . substr($digitos, 1);
+        }
+
+        if (strlen($digitos) === 9) {
+            return '593' . $digitos;
+        }
+
+        return null;
     }
 
     public function store(Request $request)
@@ -90,7 +184,6 @@ class ReservaController extends Controller
             'semana'           => ['required', 'date'],
             'nombre'           => ['required', 'string', 'max:255'],
             'cedula'           => ['required', 'string', 'max:50'],
-            'telefono'         => ['required', 'string', 'max:50'],
             'deposito_estado'  => ['nullable', 'string', 'max:255'],
             'observaciones'    => ['nullable', 'string'],
             'foto_cedula'      => ['nullable', 'image', 'max:4096'],
@@ -124,7 +217,7 @@ class ReservaController extends Controller
                 'sucursal_id' => $sucursal->id,
                 'descripcion' => $depositoEstado,
                 'cliente'     => $data['nombre'],
-                'estado'      => 'pendiente',
+                'estado'      => 'confirmada',
                 'foto'        => $fotoDepositoPath,
             ]);
             $prendaId = $prenda->id;
@@ -135,7 +228,7 @@ class ReservaController extends Controller
             'semana'          => $semana->toDateString(),
             'nombre'          => $data['nombre'],
             'cedula'          => $data['cedula'],
-            'telefono'        => $data['telefono'],
+            'telefono'        => '',
             'deposito_estado' => $depositoEstado,
             'observaciones'   => $data['observaciones'] ?? null,
             'foto_cedula'     => $request->hasFile('foto_cedula') ? $request->file('foto_cedula')->store('reservas', 'public') : null,
@@ -152,6 +245,46 @@ class ReservaController extends Controller
         $reserva->update(['estado' => 'Cancelada']);
 
         return back()->with('status', 'Reserva cancelada.');
+    }
+
+    public function actualizar(Request $request, Reserva $reserva)
+    {
+        $data = $request->validate([
+            'nombre'          => ['required', 'string', 'max:255'],
+            'cedula'          => ['required', 'string', 'max:50'],
+            'deposito_estado' => ['nullable', 'string', 'max:255'],
+            'observaciones'   => ['nullable', 'string'],
+        ]);
+
+        $depositoEstado = trim($data['deposito_estado'] ?? '');
+
+        // Si al editar se marca "Sí dejó depósito" y la reserva todavía no tiene una
+        // prenda anclada (p. ej. se creó como "No" y luego se corrigió), se crea acá
+        // igual que en store(); si ya tenía una, solo se actualiza su descripción.
+        if ($this->hasPrenda($depositoEstado)) {
+            if ($reserva->prenda_id) {
+                Prenda::whereKey($reserva->prenda_id)->update(['descripcion' => $depositoEstado]);
+            } else {
+                $prenda = Prenda::create([
+                    'sucursal_id' => $reserva->habitacion->sucursal_id,
+                    'descripcion' => $depositoEstado,
+                    'cliente'     => $data['nombre'],
+                    'estado'      => 'confirmada',
+                ]);
+                $data['prenda_id'] = $prenda->id;
+            }
+        }
+
+        $reserva->update($data);
+
+        return back()->with('status', 'Datos del cliente actualizados correctamente.');
+    }
+
+    public function destroyCliente(Cliente $cliente)
+    {
+        $cliente->delete();
+
+        return back()->with('status', 'Cliente eliminado correctamente.');
     }
 
     private function mondayOf(?string $fecha): Carbon
